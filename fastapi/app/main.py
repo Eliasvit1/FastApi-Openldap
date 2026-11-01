@@ -17,7 +17,16 @@ from ldap3.core.exceptions import LDAPException, LDAPSocketOpenError
 from ldap3.utils.conv import escape_filter_chars
 import jwt
 
-app = FastAPI(title="LDAP TLS Auth Service", version="1.0.0")
+# Restrict documentation exposure in production
+ENABLE_API_DOCS = os.getenv("ENABLE_API_DOCS", "false").lower() == "true"
+
+app = FastAPI(
+    title="LDAP TLS Auth Service",
+    version="1.0.0",
+    docs_url="/docs" if ENABLE_API_DOCS else None,
+    redoc_url="/redoc" if ENABLE_API_DOCS else None,
+    openapi_url="/openapi.json" if ENABLE_API_DOCS else None,
+)
 
 # Safe CORS Configuration: Disallow wildcard origins with credentials
 ALLOWED_ORIGINS = [
