@@ -46,6 +46,23 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type", "Accept"],
 )
 
+
+@app.middleware("http")
+async def add_security_headers_middleware(request: Request, call_next):
+    """Enforces defense-in-depth HTTP security headers and prevents banner leakage."""
+    response = await call_next(request)
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none';"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    response.headers["Cross-Origin-Embedder-Policy"] = "require-corp"
+    response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
+    response.headers["Cross-Origin-Resource-Policy"] = "same-origin"
+    response.headers["X-Permitted-Cross-Domain-Policies"] = "none"
+    response.headers["Server"] = "AuthAPI"
+    return response
+
 # Configuration
 LDAP_HOST = os.getenv("LDAP_HOST", "openldap")
 LDAP_PORT = int(os.getenv("LDAP_PORT", "636")) # Secure LDAPS Port
