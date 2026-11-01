@@ -42,10 +42,15 @@ class LDAPService:
     def authenticate_and_get_profile(self, username: str, password: str) -> Optional[UserProfile]:
         """
         Perform Search-then-Bind authentication:
-        1. Query user entry and metadata with service account.
-        2. Validate credentials via simple bind as the user DN.
-        3. Query user groups.
+        1. Validate non-empty credentials to disallow anonymous binding.
+        2. Query user entry and metadata with service account.
+        3. Validate credentials via simple bind as the user DN.
+        4. Query user groups.
         """
+        if not username or not username.strip() or not password or not password.strip():
+            logger.warning("Anonymous or empty credential binding attempt rejected.")
+            return None
+
         sanitized_username = escape_filter_chars(username.strip())
         search_base = f"{settings.ldap_users_ou},{settings.ldap_base_dn}"
         search_filter = f"(&(objectClass=inetOrgPerson)(uid={sanitized_username}))"

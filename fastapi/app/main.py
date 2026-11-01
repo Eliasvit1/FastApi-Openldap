@@ -162,7 +162,14 @@ def login(creds: LoginRequest):
     """
     Authenticates user credentials against OpenLDAP via LDAPS (port 636)
     and returns a signed JWT access token.
+    Enforces authentication by strictly rejecting empty credentials / anonymous binds.
     """
+    if not creds.username or not creds.username.strip() or not creds.password or not creds.password.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username and password are required. Anonymous binding is prohibited.",
+        )
+
     try:
         profile = authenticate_ldap_user(creds.username, creds.password)
     except LDAPSocketOpenError:
