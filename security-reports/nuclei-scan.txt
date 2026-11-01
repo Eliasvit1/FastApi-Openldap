@@ -1,0 +1,17 @@
+[swagger-api] [http] [info] http://service-ldap-auth:80/docs [paths="/docs"]
+[waf-detect:nginxgeneric] [http] [info] http://service-ldap-auth:80
+[cors-misconfig:arbitrary-origin] [http] [info] http://service-ldap-auth:80 [cors_origin="https://5scyw.com"]
+[redoc-api-docs] [http] [info] http://service-ldap-auth:80/redoc
+[openapi] [http] [info] http://service-ldap-auth:80/openapi.json
+[tech-detect:nginx] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:cross-origin-resource-policy] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:strict-transport-security] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:x-frame-options] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:x-permitted-cross-domain-policies] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:cross-origin-embedder-policy] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:cross-origin-opener-policy] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:content-security-policy] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:permissions-policy] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:x-content-type-options] [http] [info] http://service-ldap-auth:80
+[http-missing-security-headers:referrer-policy] [http] [info] http://service-ldap-auth:80
+[nginx-eol:version] [http] [info] http://service-ldap-auth:80 ["1.26.3"]
